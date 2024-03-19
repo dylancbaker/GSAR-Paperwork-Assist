@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="GSAR_Paperwork_Helper.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="DefaultInstructor" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Tim Horton</Value>
+    </Setting>
+    <Setting Name="DefaultGroup" Type="System.Guid" Scope="Application">
+      <Value Profile="(Default)">499a9b5c-e712-4968-8b9f-1deb9d402915</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

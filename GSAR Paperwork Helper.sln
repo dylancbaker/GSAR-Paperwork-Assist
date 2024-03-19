@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.34607.79
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GSAR Paperwork Helper", "GSAR Paperwork Helper\GSAR Paperwork Helper.csproj", "{755BC89A-A7AF-439F-9805-89F592E107AB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{755BC89A-A7AF-439F-9805-89F592E107AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{755BC89A-A7AF-439F-9805-89F592E107AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{755BC89A-A7AF-439F-9805-89F592E107AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{755BC89A-A7AF-439F-9805-89F592E107AB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4362744C-A46B-452F-9A57-99C187AFAF76}
+	EndGlobalSection
+EndGlobal
