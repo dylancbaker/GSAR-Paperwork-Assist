@@ -10,7 +10,6 @@ using iText.Forms;
 using iText.Forms.Fields;
 using iText.Kernel.Pdf;
 using iText.IO.Source;
-using Microsoft.AspNetCore.Mvc;
 
 
 namespace GSAR_Paperwork_Helper.Utilities
@@ -19,7 +18,7 @@ namespace GSAR_Paperwork_Helper.Utilities
     {
         public static byte[]? fillProgramPlan(GSARProgram program)
         {
-            string src = "/BlankForms/1-GSAR Program Plan.pdf";
+            string src = "BlankForms/1-GSAR Program Plan.pdf";
             if (System.IO.File.Exists(src))
             {
                 FileStream sourceFileStream = System.IO.File.OpenRead(src);
@@ -32,10 +31,32 @@ namespace GSAR_Paperwork_Helper.Utilities
                     PdfFormField toSet;
 
                     fields.TryGetValue("SAR GROUP", out toSet);
-                    toSet.SetValue("James Bond");
+                    if (toSet != null) { toSet.SetValue(program.SARGroupName); }
 
-                    fields.TryGetValue("Instructor Name", out toSet);
-                    toSet.SetValue("English");
+                    _ = fields.TryGetValue("Instructor Name", out toSet);
+                    if (toSet != null) { toSet.SetValue(program.LeadInstructor); }
+
+                    _ = fields.TryGetValue("Address", out toSet);
+                    if (toSet != null) { toSet.SetValue(program.MailingAddress); }
+                    _ = fields.TryGetValue("DATE", out toSet);
+                    if (toSet != null) { toSet.SetValue(program.ProgramPlanDate.ToString("yyyy-MMM-dd")); }
+                    _ = fields.TryGetValue("email", out toSet);
+                    if (toSet != null) { toSet.SetValue(program.Email); }
+                    _ = fields.TryGetValue("Phone", out toSet);
+                    if (toSet != null) { toSet.SetValue(program.Phone); }
+
+                    for(int x= 0; x < program.students.Count && x < 28; x++)
+                    {
+                        Personnel p = program.students[x];
+                        fields.TryGetValue("LAST NAME" + (x + 1), out toSet);
+                        if (toSet != null) { toSet.SetValue(p.LastName); }
+                        fields.TryGetValue("FIRST NAME" + (x + 1), out toSet);
+                        if (toSet != null) { toSet.SetValue(p.FirstName); }
+                        fields.TryGetValue("DATE OF BIRTH" + (x + 1), out toSet);
+                        if (toSet != null) { toSet.SetValue(p.DateOfBirth.ToString("yyyy-MMM-dd")); }
+                       
+
+                    }
 
                     pdf.Close();
                     return outputStream.ToArray();

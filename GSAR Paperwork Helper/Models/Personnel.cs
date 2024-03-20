@@ -15,5 +15,6 @@ namespace GSAR_Paperwork_Helper.Models
         public string? EmailAddress { get; set; }
 
 
+        public Personnel() { ID = Guid.NewGuid(); DateOfBirth = DateTime.Now.AddYears(-18); }
     }
 }

@@ -12,6 +12,6 @@ namespace GSAR_Paperwork_Helper.Models
         public Guid PersonnelID { get; set; }
         public Guid CourseID { get; set; }
 
-
+        public CourseRecord() { RecordID = Guid.NewGuid(); }
     }
 }

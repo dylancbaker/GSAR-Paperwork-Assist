@@ -15,21 +15,24 @@ namespace GSAR_Paperwork_Helper.Models
         public string? Email { get; set; }
         public string? MailingAddress { get; set; }
         public string? Phone { get; set; }
-
+        public DateTime ProgramPlanDate { get; set; }
         public List<Personnel> students { get; set; } = new List<Personnel>();
         public List<Course> courses { get; set; } = new List<Course>();
 
 
         public GSARProgram()
         {
+            ProgramID = Guid.NewGuid();
             if (Properties.Settings.Default.DefaultGroup != Guid.Empty)
             {
                 Organization org = OrganizationTools.GetOrganization(Properties.Settings.Default.DefaultGroup);
                 if (org != null) { SARGroupName = org.OrganizationName; SARGroupID = org.OrganizationID; }
 
             }
-
+            ProgramPlanDate = DateTime.Now;
             LeadInstructor = Properties.Settings.Default.DefaultInstructor;
+
+            courses = CourseTools.GetBlankCourses();
         }
     }
 

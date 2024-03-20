@@ -1,5 +1,8 @@
-﻿using GSAR_Paperwork_Helper.ViewModels;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -10,19 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace GSAR_Paperwork_Helper
+namespace GSAR_Paperwork_Helper.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for PersonnelListView.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class PersonnelListView : Page
     {
-        ProgramRosterViewModel viewModel;
-        public MainWindow()
+        public PersonnelListView()
         {
             InitializeComponent();
-            viewModel = new ProgramRosterViewModel();
-            DataContext = viewModel;
         }
     }
 }
