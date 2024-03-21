@@ -4,29 +4,40 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GSAR_Paperwork_Helper"
-        xmlns:viewModels="clr-namespace:GSAR_Paperwork_Helper.ViewModels"
+        xmlns:viewModels="clr-namespace:GSAR_Paperwork_Helper.ViewModels" 
+        xmlns:local1="clr-namespace:GSAR_Paperwork_Helper.Utilities"
         mc:Ignorable="d"
-        Title="MainWindow" Height="511" Width="800" FontSize="18.667"
-        
+        Title="GSAR Paperwork Assist" Height="511" Width="942" FontSize="18.667" WindowStartupLocation="CenterScreen"
+
         >
 
     <DockPanel>
+        
         <Menu DockPanel.Dock="Top" FontSize="18.667">
             <MenuItem Header="_File">
-                <MenuItem Header="New GSAR Program"></MenuItem>
-                <MenuItem Header="Open..."></MenuItem>
-                <MenuItem Header="Open Recent"></MenuItem>
-                <MenuItem Header="Save"></MenuItem>
+                <MenuItem Header="New GSAR Program" x:Name="miNewProgram" Click="miNewProgram_Click"></MenuItem>
+                <MenuItem Header="Open..." x:Name="miOpen" Click="miOpen_Click"></MenuItem>
+                <MenuItem Header="Save" x:Name="miSave" Click="miSave_Click"></MenuItem>
                 <Separator></Separator>
-                <MenuItem Header="Exit"></MenuItem>
+                <MenuItem Header="Exit" x:Name="miExit" Click="miExit_Click"></MenuItem>
             </MenuItem>
             <MenuItem Header="_Print">
                 <MenuItem Header="Program Plan" Click="MenuItem_Click"></MenuItem>
+                <Separator></Separator>
+                <MenuItem Header="EMRG-1701 Course Roster" x:Name="mi1701" Click="mi1701_Click"></MenuItem>
+                <MenuItem Header="EMRG-1702 Course Roster" x:Name="mi1702" Click="mi1702_Click"></MenuItem>
+                <MenuItem Header="EMRG-1704 Course Roster" x:Name="mi1704" Click="mi1704_Click"></MenuItem>
+                <MenuItem Header="EMRG-1705 Course Roster" x:Name="mi1705" Click="mi1705_Click"></MenuItem>
+                <MenuItem Header="EMRG-1706 Course Roster" x:Name="mi1706" Click="mi1706_Click"></MenuItem>
+                <MenuItem Header="EMRG-1200 Course Roster" x:Name="mi1200" Click="mi1200_Click"></MenuItem>
+                <MenuItem Header="All Course Rosters" x:Name="miAllRosters" Click="miAllRosters_Click"></MenuItem>
+                <Separator></Separator>
+                <MenuItem Header="Program Completion Roster" x:Name="miProgramCompletion" Click="miProgramCompletion_Click"></MenuItem>
             </MenuItem>
         </Menu>
         <TabControl>
             <TabItem>
-                <TabItem.Header>Course Details</TabItem.Header>
+                <TabItem.Header>Program Details</TabItem.Header>
 
                 <Grid Margin="20,20,20,20">
                     <Grid.ColumnDefinitions>
@@ -44,7 +55,7 @@
 
 
                     </Grid.RowDefinitions>
-                    <Label x:Name="PageTitle" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Content="{Binding TitleText}" FontSize="24" FontWeight="Bold"></Label>
+                    <Label x:Name="PageTitle" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Content="GSAR Paperwork Assist" FontSize="24" FontWeight="Bold"></Label>
 
                     <Label Content="SAR Group:" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" VerticalContentAlignment="Center"></Label>
                     <ComboBox  Margin="2" x:Name="cboSARGroup" Grid.Row="1" Grid.Column="1" ItemsSource="{Binding BCSARGroups}" SelectedValue="{Binding currentProgram.SARGroupID}" DisplayMemberPath="OrganizationName"
@@ -71,12 +82,15 @@ SelectedValuePath="OrganizationID" VerticalContentAlignment="Center" ></ComboBox
             </TabItem>
             <TabItem>
                 <TabItem.Header>Student List</TabItem.Header>
+               
+
                 <DockPanel>
-                    <DataGrid CanUserAddRows="True" AutoGenerateColumns="False" ItemsSource="{Binding currentProgram.students}">
+                    <Label DockPanel.Dock="Top" FontStyle="Italic" Background="LightBlue">Click below to add a student.  Type [ENTER] to create the next new student, etc.</Label>
+                    <DataGrid Margin="5" AutoGenerateColumns="False" ItemsSource="{Binding studentList}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="ID" Binding="{Binding ID}" Visibility="Hidden"/>
-                            <DataGridTextColumn MinWidth="160" Header="First Name" Binding="{Binding FirstName}"/>
                             <DataGridTextColumn MinWidth="160"  Header="Last Name" Binding="{Binding LastName}"/>
+                            <DataGridTextColumn MinWidth="160" Header="First Name" Binding="{Binding FirstName}"/>
                             <DataGridTemplateColumn Header="Date of Birth" >
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
@@ -96,24 +110,316 @@ SelectedValuePath="OrganizationID" VerticalContentAlignment="Center" ></ComboBox
             </TabItem>
             <TabItem>
                 <TabItem.Header>EMRG-1701</TabItem.Header>
-                Start date
-                end date
-                grades
+                <DockPanel>
+                <Grid Margin="5,5,5,5" DockPanel.Dock="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="200"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="45"></RowDefinition>
+                        <RowDefinition Height="40"></RowDefinition>
+                        <RowDefinition Height="40"></RowDefinition>
+                        <RowDefinition Height="40"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="0" Content="{Binding Emrg1701.CourseName}" FontSize="24" FontWeight="Bold"></Label>
+
+                    
+                    <Label Content="Start Date:" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" VerticalContentAlignment="Center"></Label>
+                        <DatePicker  Margin="2"  Grid.Row="1" Grid.Column="1" SelectedDate="{Binding Emrg1701.CourseStart}" VerticalContentAlignment="Center"></DatePicker>
+
+                    <Label Content="End Date:" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right" VerticalContentAlignment="Center"></Label>
+                        <DatePicker  Margin="2"  Grid.Row="1" Grid.Column="3" SelectedDate="{Binding Emrg1701.CourseEnd}" VerticalContentAlignment="Center"></DatePicker>
+                    
+                    <Label Content="Lead Instructor:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" VerticalContentAlignment="Center"></Label>
+                    <TextBox  Margin="2" Grid.Row="2"  AcceptsReturn="False" Grid.Column="1" Text="{Binding Emrg1701.LeadInstructor}" VerticalContentAlignment="Center"></TextBox>
+
+                        <Label Content="Location:" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Right" VerticalContentAlignment="Center"></Label>
+                        <TextBox  Margin="2" Grid.Row="2"  AcceptsReturn="False" Grid.Column="3" Text="{Binding Emrg1701.CourseLocation}" VerticalContentAlignment="Center"></TextBox>
+
+                        <Label Content="Assistant Instructor(s):" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" VerticalContentAlignment="Center">
+                    </Label>
+                        <TextBox  Margin="2"  Grid.Row="3" AcceptsReturn="False" Grid.ColumnSpan="3" Grid.Column="1" Text="{Binding Emrg1701.AssistantInstructors}" VerticalContentAlignment="Center"></TextBox>
+                </Grid>
+
+                    <DataGrid ItemsSource="{Binding Emrg1701.CourseRecords}" CanUserAddRows="False" AutoGenerateColumns="False" VerticalContentAlignment="Center">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding RecordID}" Visibility="Hidden"/>
+                            <DataGridTextColumn Header="ID" Binding="{Binding PersonnelID}" Visibility="Hidden"/>
+                            <DataGridTextColumn Header="ID" Binding="{Binding CourseID}" Visibility="Hidden"/>
+                            <DataGridTextColumn MinWidth="160" Width="*" Header="StudentName" Binding="{Binding StudentName}" IsReadOnly="True"/>
+                            <local1:DataGridNumericColumn  Header="Exam Result" Binding="{Binding ExamResult}"/>
+                            
+                            <DataGridCheckBoxColumn Header="Pass Practical 1" Binding="{Binding PassPractical1}"></DataGridCheckBoxColumn>
+                            <DataGridCheckBoxColumn Header="Pass Practical 2" Binding="{Binding PassPractical2}" Visibility="Hidden"></DataGridCheckBoxColumn>
+                            <DataGridCheckBoxColumn Header="Pass Practical 3" Binding="{Binding PassPractical3}" Visibility="Hidden"></DataGridCheckBoxColumn>
+                            <DataGridCheckBoxColumn Header="Pass Practical 4" Binding="{Binding PassPractical4}" Visibility="Hidden"></DataGridCheckBoxColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
             </TabItem>
             <TabItem>
                 <TabItem.Header>EMRG-1702</TabItem.Header>
+                <DockPanel>
+                    <Grid Margin="5,5,5,5" DockPanel.Dock="Top">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="200"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="45"></RowDefinition>
+                            <RowDefinition Height="40"></RowDefinition>
+                            <RowDefinition Height="40"></RowDefinition>
+                            <RowDefinition Height="40"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="0" Content="{Binding Emrg1702.CourseName}" FontSize="24" FontWeight="Bold"></Label>
+
+
+                        <Label Content="Start Date:" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" VerticalContentAlignment="Center"></Label>
+                        <DatePicker  Margin="2"  Grid.Row="1" Grid.Column="1" SelectedDate="{Binding Emrg1702.CourseStart}" VerticalContentAlignment="Center"></DatePicker>
+
+                        <Label Content="End Date:" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right" VerticalContentAlignment="Center"></Label>
+                        <DatePicker  Margin="2"  Grid.Row="1" Grid.Column="3" SelectedDate="{Binding Emrg1702.CourseEnd}" VerticalContentAlignment="Center"></DatePicker>
+
+                        <Label Content="Lead Instructor:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" VerticalContentAlignment="Center"></Label>
+                        <TextBox  Margin="2" Grid.Row="2"  AcceptsReturn="False" Grid.Column="1" Text="{Binding Emrg1702.LeadInstructor}" VerticalContentAlignment="Center"></TextBox>
+
+                        <Label Content="Location:" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Right" VerticalContentAlignment="Center"></Label>
+                        <TextBox  Margin="2" Grid.Row="2"  AcceptsReturn="False" Grid.Column="3" Text="{Binding Emrg1702.CourseLocation}" VerticalContentAlignment="Center"></TextBox>
+
+                        <Label Content="Assistant Instructor(s):" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" VerticalContentAlignment="Center">
+                        </Label>
+                        <TextBox  Margin="2"  Grid.Row="3" AcceptsReturn="False" Grid.ColumnSpan="3" Grid.Column="1" Text="{Binding Emrg1702.AssistantInstructors}" VerticalContentAlignment="Center"></TextBox>
+                    </Grid>
+
+                    <DataGrid ItemsSource="{Binding Emrg1702.CourseRecords}" CanUserAddRows="False" AutoGenerateColumns="False" VerticalContentAlignment="Center">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding RecordID}" Visibility="Hidden"/>
+                            <DataGridTextColumn Header="ID" Binding="{Binding PersonnelID}" Visibility="Hidden"/>
+                            <DataGridTextColumn Header="ID" Binding="{Binding CourseID}" Visibility="Hidden"/>
+                            <DataGridTextColumn MinWidth="160" Width="*" Header="StudentName" Binding="{Binding StudentName}" IsReadOnly="True"/>
+                            <local1:DataGridNumericColumn  Header="Exam Result" Binding="{Binding ExamResult}"/>
+
+                            <DataGridCheckBoxColumn Header="Pass Practical 1" Binding="{Binding PassPractical1}"></DataGridCheckBoxColumn>
+                            <DataGridCheckBoxColumn Header="Pass Practical 2" Binding="{Binding PassPractical2}"></DataGridCheckBoxColumn>
+                            <DataGridCheckBoxColumn Header="Pass Practical 3" Binding="{Binding PassPractical3}" Visibility="Hidden"></DataGridCheckBoxColumn>
+                            <DataGridCheckBoxColumn Header="Pass Practical 4" Binding="{Binding PassPractical4}" Visibility="Hidden"></DataGridCheckBoxColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
             </TabItem>
             <TabItem>
                 <TabItem.Header>EMRG-1704</TabItem.Header>
+                <DockPanel>
+                    <Grid Margin="5,5,5,5" DockPanel.Dock="Top">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="200"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="45"></RowDefinition>
+                            <RowDefinition Height="40"></RowDefinition>
+                            <RowDefinition Height="40"></RowDefinition>
+                            <RowDefinition Height="40"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="0" Content="{Binding Emrg1704.CourseName}" FontSize="24" FontWeight="Bold"></Label>
+
+
+                        <Label Content="Start Date:" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" VerticalContentAlignment="Center"></Label>
+                        <DatePicker  Margin="2"  Grid.Row="1" Grid.Column="1" SelectedDate="{Binding Emrg1704.CourseStart}" VerticalContentAlignment="Center"></DatePicker>
+
+                        <Label Content="End Date:" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right" VerticalContentAlignment="Center"></Label>
+                        <DatePicker  Margin="2"  Grid.Row="1" Grid.Column="3" SelectedDate="{Binding Emrg1704.CourseEnd}" VerticalContentAlignment="Center"></DatePicker>
+
+                        <Label Content="Lead Instructor:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" VerticalContentAlignment="Center"></Label>
+                        <TextBox  Margin="2" Grid.Row="2"  AcceptsReturn="False" Grid.Column="1" Text="{Binding Emrg1704.LeadInstructor}" VerticalContentAlignment="Center"></TextBox>
+
+                        <Label Content="Location:" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Right" VerticalContentAlignment="Center"></Label>
+                        <TextBox  Margin="2" Grid.Row="2"  AcceptsReturn="False" Grid.Column="3" Text="{Binding Emrg1704.CourseLocation}" VerticalContentAlignment="Center"></TextBox>
+
+                        <Label Content="Assistant Instructor(s):" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" VerticalContentAlignment="Center">
+                        </Label>
+                        <TextBox  Margin="2"  Grid.Row="3" AcceptsReturn="False" Grid.ColumnSpan="3" Grid.Column="1" Text="{Binding Emrg1704.AssistantInstructors}" VerticalContentAlignment="Center"></TextBox>
+                    </Grid>
+
+                    <DataGrid ItemsSource="{Binding Emrg1704.CourseRecords}" CanUserAddRows="False" AutoGenerateColumns="False" VerticalContentAlignment="Center">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding RecordID}" Visibility="Hidden"/>
+                            <DataGridTextColumn Header="ID" Binding="{Binding PersonnelID}" Visibility="Hidden"/>
+                            <DataGridTextColumn Header="ID" Binding="{Binding CourseID}" Visibility="Hidden"/>
+                            <DataGridTextColumn MinWidth="160" Width="*" Header="StudentName" Binding="{Binding StudentName}" IsReadOnly="True"/>
+                            <local1:DataGridNumericColumn  Header="Exam Result" Binding="{Binding ExamResult}"/>
+
+                            <DataGridCheckBoxColumn Header="Pass Practical 1" Binding="{Binding PassPractical1}"></DataGridCheckBoxColumn>
+                            <DataGridCheckBoxColumn Header="Pass Practical 2" Binding="{Binding PassPractical2}"></DataGridCheckBoxColumn>
+                            <DataGridCheckBoxColumn Header="Pass Practical 3" Binding="{Binding PassPractical3}"></DataGridCheckBoxColumn>
+                            <DataGridCheckBoxColumn Header="Pass Practical 4" Binding="{Binding PassPractical4}"></DataGridCheckBoxColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+                
             </TabItem>
             <TabItem>
                 <TabItem.Header>EMRG-1705</TabItem.Header>
+                <DockPanel>
+                    <Grid Margin="5,5,5,5" DockPanel.Dock="Top">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="200"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="45"></RowDefinition>
+                            <RowDefinition Height="40"></RowDefinition>
+                            <RowDefinition Height="40"></RowDefinition>
+                            <RowDefinition Height="40"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="0" Content="{Binding Emrg1705.CourseName}" FontSize="24" FontWeight="Bold"></Label>
+
+
+                        <Label Content="Start Date:" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" VerticalContentAlignment="Center"></Label>
+                        <DatePicker  Margin="2"  Grid.Row="1" Grid.Column="1" SelectedDate="{Binding Emrg1705.CourseStart}" VerticalContentAlignment="Center"></DatePicker>
+
+                        <Label Content="End Date:" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right" VerticalContentAlignment="Center"></Label>
+                        <DatePicker  Margin="2"  Grid.Row="1" Grid.Column="3" SelectedDate="{Binding Emrg1705.CourseEnd}" VerticalContentAlignment="Center"></DatePicker>
+
+                        <Label Content="Lead Instructor:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" VerticalContentAlignment="Center"></Label>
+                        <TextBox  Margin="2" Grid.Row="2"  AcceptsReturn="False" Grid.Column="1" Text="{Binding Emrg1705.LeadInstructor}" VerticalContentAlignment="Center"></TextBox>
+
+                        <Label Content="Location:" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Right" VerticalContentAlignment="Center"></Label>
+                        <TextBox  Margin="2" Grid.Row="2"  AcceptsReturn="False" Grid.Column="3" Text="{Binding Emrg1705.CourseLocation}" VerticalContentAlignment="Center"></TextBox>
+
+                        <Label Content="Assistant Instructor(s):" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" VerticalContentAlignment="Center">
+                        </Label>
+                        <TextBox  Margin="2"  Grid.Row="3" AcceptsReturn="False" Grid.ColumnSpan="3" Grid.Column="1" Text="{Binding Emrg1705.AssistantInstructors}" VerticalContentAlignment="Center"></TextBox>
+                    </Grid>
+
+                    <DataGrid ItemsSource="{Binding Emrg1705.CourseRecords}" CanUserAddRows="False" AutoGenerateColumns="False" VerticalContentAlignment="Center">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding RecordID}" Visibility="Hidden"/>
+                            <DataGridTextColumn Header="ID" Binding="{Binding PersonnelID}" Visibility="Hidden"/>
+                            <DataGridTextColumn Header="ID" Binding="{Binding CourseID}" Visibility="Hidden"/>
+                            <DataGridTextColumn MinWidth="160" Width="*" Header="StudentName" Binding="{Binding StudentName}" IsReadOnly="True"/>
+                            <local1:DataGridNumericColumn  Header="Exam Result" Binding="{Binding ExamResult}"/>
+
+                            <DataGridCheckBoxColumn Header="Pass Practical 1" Binding="{Binding PassPractical1}"></DataGridCheckBoxColumn>
+                            <DataGridCheckBoxColumn Header="Pass Practical 2" Binding="{Binding PassPractical2}" Visibility="Hidden"></DataGridCheckBoxColumn>
+                            <DataGridCheckBoxColumn Header="Pass Practical 3" Binding="{Binding PassPractical3}" Visibility="Hidden"></DataGridCheckBoxColumn>
+                            <DataGridCheckBoxColumn Header="Pass Practical 4" Binding="{Binding PassPractical4}" Visibility="Hidden"></DataGridCheckBoxColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
             </TabItem>
             <TabItem>
                 <TabItem.Header>EMRG-1706</TabItem.Header>
+                <DockPanel>
+                    <Grid Margin="5,5,5,5" DockPanel.Dock="Top">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="200"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="45"></RowDefinition>
+                            <RowDefinition Height="40"></RowDefinition>
+                            <RowDefinition Height="40"></RowDefinition>
+                            <RowDefinition Height="40"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="0" Content="{Binding Emrg1706.CourseName}" FontSize="24" FontWeight="Bold"></Label>
+
+
+                        <Label Content="Start Date:" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" VerticalContentAlignment="Center"></Label>
+                        <DatePicker  Margin="2"  Grid.Row="1" Grid.Column="1" SelectedDate="{Binding Emrg1706.CourseStart}" VerticalContentAlignment="Center"></DatePicker>
+
+                        <Label Content="End Date:" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right" VerticalContentAlignment="Center"></Label>
+                        <DatePicker  Margin="2"  Grid.Row="1" Grid.Column="3" SelectedDate="{Binding Emrg1706.CourseEnd}" VerticalContentAlignment="Center"></DatePicker>
+
+                        <Label Content="Lead Instructor:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" VerticalContentAlignment="Center"></Label>
+                        <TextBox  Margin="2" Grid.Row="2"  AcceptsReturn="False" Grid.Column="1" Text="{Binding Emrg1706.LeadInstructor}" VerticalContentAlignment="Center"></TextBox>
+
+                        <Label Content="Location:" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Right" VerticalContentAlignment="Center"></Label>
+                        <TextBox  Margin="2" Grid.Row="2"  AcceptsReturn="False" Grid.Column="3" Text="{Binding Emrg1706.CourseLocation}" VerticalContentAlignment="Center"></TextBox>
+
+                        <Label Content="Assistant Instructor(s):" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" VerticalContentAlignment="Center">
+                        </Label>
+                        <TextBox  Margin="2"  Grid.Row="3" AcceptsReturn="False" Grid.ColumnSpan="3" Grid.Column="1" Text="{Binding Emrg1706.AssistantInstructors}" VerticalContentAlignment="Center"></TextBox>
+                    </Grid>
+
+                    <DataGrid ItemsSource="{Binding Emrg1706.CourseRecords}" CanUserAddRows="False" AutoGenerateColumns="False" VerticalContentAlignment="Center">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding RecordID}" Visibility="Hidden"/>
+                            <DataGridTextColumn Header="ID" Binding="{Binding PersonnelID}" Visibility="Hidden"/>
+                            <DataGridTextColumn Header="ID" Binding="{Binding CourseID}" Visibility="Hidden"/>
+                            <DataGridTextColumn MinWidth="160" Width="*" Header="StudentName" Binding="{Binding StudentName}" IsReadOnly="True"/>
+                            <local1:DataGridNumericColumn  Header="Exam Result" Binding="{Binding ExamResult}"/>
+
+                            <DataGridCheckBoxColumn Header="Pass Practical 1" Binding="{Binding PassPractical1}"></DataGridCheckBoxColumn>
+                            <DataGridCheckBoxColumn Header="Pass Practical 2" Binding="{Binding PassPractical2}" Visibility="Hidden"></DataGridCheckBoxColumn>
+                            <DataGridCheckBoxColumn Header="Pass Practical 3" Binding="{Binding PassPractical3}" Visibility="Hidden"></DataGridCheckBoxColumn>
+                            <DataGridCheckBoxColumn Header="Pass Practical 4" Binding="{Binding PassPractical4}" Visibility="Hidden"></DataGridCheckBoxColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
             </TabItem>
             <TabItem>
                 <TabItem.Header>EMRG-1200</TabItem.Header>
+                <DockPanel>
+                    <Grid Margin="5,5,5,5" DockPanel.Dock="Top">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="200"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="45"></RowDefinition>
+                            <RowDefinition Height="40"></RowDefinition>
+                            <RowDefinition Height="40"></RowDefinition>
+                            <RowDefinition Height="40"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="0" Content="{Binding Emrg1200.CourseName}" FontSize="24" FontWeight="Bold"></Label>
+
+
+                        <Label Content="Start Date:" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" VerticalContentAlignment="Center"></Label>
+                        <DatePicker  Margin="2"  Grid.Row="1" Grid.Column="1" SelectedDate="{Binding Emrg1200.CourseStart}" VerticalContentAlignment="Center"></DatePicker>
+
+                        <Label Content="End Date:" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right" VerticalContentAlignment="Center"></Label>
+                        <DatePicker  Margin="2"  Grid.Row="1" Grid.Column="3" SelectedDate="{Binding Emrg1200.CourseEnd}" VerticalContentAlignment="Center"></DatePicker>
+
+                        <Label Content="Lead Instructor:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" VerticalContentAlignment="Center"></Label>
+                        <TextBox  Margin="2" Grid.Row="2"  AcceptsReturn="False" Grid.Column="1" Text="{Binding Emrg1200.LeadInstructor}" VerticalContentAlignment="Center"></TextBox>
+
+                        <Label Content="Location:" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Right" VerticalContentAlignment="Center"></Label>
+                        <TextBox  Margin="2" Grid.Row="2"  AcceptsReturn="False" Grid.Column="3" Text="{Binding Emrg1200.CourseLocation}" VerticalContentAlignment="Center"></TextBox>
+
+                        <Label Content="Assistant Instructor(s):" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" VerticalContentAlignment="Center">
+                        </Label>
+                        <TextBox  Margin="2"  Grid.Row="3" AcceptsReturn="False" Grid.ColumnSpan="3" Grid.Column="1" Text="{Binding Emrg1200.AssistantInstructors}" VerticalContentAlignment="Center"></TextBox>
+                    </Grid>
+
+                    <DataGrid ItemsSource="{Binding Emrg1200.CourseRecords}" CanUserAddRows="False" AutoGenerateColumns="False" VerticalContentAlignment="Center">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding RecordID}" Visibility="Hidden"/>
+                            <DataGridTextColumn Header="ID" Binding="{Binding PersonnelID}" Visibility="Hidden"/>
+                            <DataGridTextColumn Header="ID" Binding="{Binding CourseID}" Visibility="Hidden"/>
+                            <DataGridTextColumn MinWidth="160" Width="*" Header="StudentName" Binding="{Binding StudentName}" IsReadOnly="True"/>
+                            <local1:DataGridNumericColumn  Header="Exam Result" Binding="{Binding ExamResult}"/>
+
+                            <DataGridCheckBoxColumn Header="Pass Practical 1" Binding="{Binding PassPractical1}" Visibility="Hidden"></DataGridCheckBoxColumn>
+                            <DataGridCheckBoxColumn Header="Pass Practical 2" Binding="{Binding PassPractical2}" Visibility="Hidden"></DataGridCheckBoxColumn>
+                            <DataGridCheckBoxColumn Header="Pass Practical 3" Binding="{Binding PassPractical3}" Visibility="Hidden"></DataGridCheckBoxColumn>
+                            <DataGridCheckBoxColumn Header="Pass Practical 4" Binding="{Binding PassPractical4}" Visibility="Hidden"></DataGridCheckBoxColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
             </TabItem>
         </TabControl>
 

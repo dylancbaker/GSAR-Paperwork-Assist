@@ -1,9 +1,12 @@
 ﻿using GSAR_Paperwork_Helper.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
 
 namespace GSAR_Paperwork_Helper.Models
 {
@@ -15,19 +18,24 @@ namespace GSAR_Paperwork_Helper.Models
         public string? CourseLocation { get; set; }
         public string? SARGroupName { get; set; }
         public string? LeadInstructor {  get; set; }
-        public List<string>? AssistantInstructors { get; set; } = new List<string>();
+        public string? AssistantInstructors { get; set; }
         public DateTime CourseStart { get; set; }
         public DateTime CourseEnd { get; set; }
         
         public int PracticalCount { get; set; }
 
-        public List<CourseRecord> CourseRecords { get; set; } = new List<CourseRecord>();
+        public BindingList<CourseRecord> CourseRecords { get; set; } = new BindingList<CourseRecord>();
 
-
+        public bool ShowPractical1 { get { if (PracticalCount > 0) { return true; } return false; } }
+        public bool ShowPractical2 { get { if (PracticalCount > 1) { return true; } return false; } }
+        public bool ShowPractical3 { get { if (PracticalCount > 2) { return true; } return false; } }
+        public bool ShowPractical4 { get { if (PracticalCount > 3) { return true; } return false; } }
         public Course()
-        {CourseStart = DateTime.Now;
+        {
+            CourseStart = DateTime.Now;
             CourseEnd = DateTime.Now;
-            
+            LeadInstructor = Properties.Settings.Default.DefaultInstructor;
+            CourseID = Guid.NewGuid();
         }
     }
 
@@ -82,7 +90,7 @@ namespace GSAR_Paperwork_Helper.Models
         {
             Course course = new Course();
             course.CourseID = StaticValues.EMRG1704;
-            course.CourseName = "GSAR";
+            course.CourseName = "Ground SAR Skills";
             course.CourseCode = "EMRG-1704";
             course.PracticalCount = 4;
             return course;
@@ -100,7 +108,7 @@ namespace GSAR_Paperwork_Helper.Models
         {
             Course course = new Course();
             course.CourseID = StaticValues.EMRG1706;
-            course.CourseName = "Wilderness Survival for";
+            course.CourseName = "Wilderness Survival for GSAR";
             course.CourseCode = "EMRG-1706";
             course.PracticalCount = 1;
             return course;

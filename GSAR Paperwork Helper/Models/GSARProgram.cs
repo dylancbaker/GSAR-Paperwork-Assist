@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,9 +17,9 @@ namespace GSAR_Paperwork_Helper.Models
         public string? MailingAddress { get; set; }
         public string? Phone { get; set; }
         public DateTime ProgramPlanDate { get; set; }
-        public List<Personnel> students { get; set; } = new List<Personnel>();
-        public List<Course> courses { get; set; } = new List<Course>();
-
+        public ObservableCollection<Personnel> students { get; set; } = new ObservableCollection<Personnel>();
+        public ObservableCollection<Course> courses { get; set; } = new ObservableCollection<Course>();
+        public string? FilePath { get; set; }
 
         public GSARProgram()
         {
@@ -32,19 +33,18 @@ namespace GSAR_Paperwork_Helper.Models
             ProgramPlanDate = DateTime.Now;
             LeadInstructor = Properties.Settings.Default.DefaultInstructor;
 
-            courses = CourseTools.GetBlankCourses();
+          
+        }
+
+        public void SetUpNewProgram()
+        {
+            courses = new ObservableCollection<Course>(CourseTools.GetBlankCourses());
+
         }
     }
 
     public static class GSARProgramTools
     {
-        public static void AddStudent(this GSARProgram program, Personnel student)
-        {
-            if(!program.students.Any(o=>o.ID == student.ID))
-            {
-                program.students.Add(student);
-                program.students = program.students.OrderBy(o=>o.LastName).ThenBy(o=>o.FirstName).ToList();
-            }
-        }
+       
     }
 }
