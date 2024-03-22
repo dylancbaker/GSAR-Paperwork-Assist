@@ -23,21 +23,27 @@ namespace GSAR_Paperwork_Helper.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Tim Horton")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string DefaultInstructor {
             get {
                 return ((string)(this["DefaultInstructor"]));
             }
+            set {
+                this["DefaultInstructor"] = value;
+            }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("499a9b5c-e712-4968-8b9f-1deb9d402915")]
+        [global::System.Configuration.DefaultSettingValueAttribute("ab67b6d4-f795-43ad-9506-69880f7beafd")]
         public global::System.Guid DefaultGroup {
             get {
                 return ((global::System.Guid)(this["DefaultGroup"]));
+            }
+            set {
+                this["DefaultGroup"] = value;
             }
         }
     }

@@ -55,6 +55,21 @@ namespace GSAR_Paperwork_Helper.ViewModels
             currentProgram.SetUpNewProgram();
             studentList = new BindingList<Personnel>(currentProgram.students);
             studentList.ListChanged += StudentList_ListChanged;
+            currentProgram.PropertyChanged += CurrentProgram_PropertyChanged;
+
+        }
+
+        private void CurrentProgram_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof
+                (currentProgram.LeadInstructor))
+            {
+                if (Properties.Settings.Default.DefaultInstructor != null) { Properties.Settings.Default.DefaultInstructor = currentProgram.LeadInstructor; Properties.Settings.Default.Save(); }
+            }
+            else if (e.PropertyName == nameof(currentProgram.SARGroupID))
+            {
+                Properties.Settings.Default.DefaultGroup = currentProgram.SARGroupID; Properties.Settings.Default.Save();
+            }
         }
 
         private void StudentList_ListChanged(object? sender, ListChangedEventArgs e)
