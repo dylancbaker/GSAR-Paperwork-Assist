@@ -7,7 +7,7 @@
         xmlns:viewModels="clr-namespace:GSAR_Paperwork_Helper.ViewModels" 
         xmlns:local1="clr-namespace:GSAR_Paperwork_Helper.Utilities"
         mc:Ignorable="d"
-        Title="GSAR Paperwork Assist" Height="511" Width="942" FontSize="18.667" WindowStartupLocation="CenterScreen"
+        Title="GSAR Paperwork Assist" Height="511" Width="1094" FontSize="18.667" WindowStartupLocation="CenterScreen" Icon="/Views/GSAR Paperwork Assist-01.png"
 
         >
 
@@ -24,15 +24,18 @@
             <MenuItem Header="_Print">
                 <MenuItem Header="Program Plan" Click="MenuItem_Click"></MenuItem>
                 <Separator></Separator>
-                <MenuItem Header="EMRG-1701 Course Roster" x:Name="mi1701" Click="mi1701_Click"></MenuItem>
-                <MenuItem Header="EMRG-1702 Course Roster" x:Name="mi1702" Click="mi1702_Click"></MenuItem>
-                <MenuItem Header="EMRG-1704 Course Roster" x:Name="mi1704" Click="mi1704_Click"></MenuItem>
-                <MenuItem Header="EMRG-1705 Course Roster" x:Name="mi1705" Click="mi1705_Click"></MenuItem>
-                <MenuItem Header="EMRG-1706 Course Roster" x:Name="mi1706" Click="mi1706_Click"></MenuItem>
-                <MenuItem Header="EMRG-1200 Course Roster" x:Name="mi1200" Click="mi1200_Click"></MenuItem>
+                <MenuItem Header="Course Roster EMRG-1701" x:Name="mi1701" Click="mi1701_Click"></MenuItem>
+                <MenuItem Header="Course Roster EMRG-1702" x:Name="mi1702" Click="mi1702_Click"></MenuItem>
+                <MenuItem Header="Course Roster EMRG-1704" x:Name="mi1704" Click="mi1704_Click"></MenuItem>
+                <MenuItem Header="Course Roster EMRG-1705" x:Name="mi1705" Click="mi1705_Click"></MenuItem>
+                <MenuItem Header="Course Roster EMRG-1706" x:Name="mi1706" Click="mi1706_Click"></MenuItem>
+                <MenuItem Header="Course Roster EMRG-1200" x:Name="mi1200" Click="mi1200_Click"></MenuItem>
                 <MenuItem Header="All Course Rosters" x:Name="miAllRosters" Click="miAllRosters_Click"></MenuItem>
                 <Separator></Separator>
                 <MenuItem Header="Program Completion Roster" x:Name="miProgramCompletion" Click="miProgramCompletion_Click"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Help">
+                <MenuItem Header="About and License" x:Name="miAbout" Click="miAbout_Click"></MenuItem>
             </MenuItem>
         </Menu>
         <TabControl>
@@ -206,6 +209,58 @@ SelectedValuePath="OrganizationID" VerticalContentAlignment="Center" ></ComboBox
 
                             <DataGridCheckBoxColumn Header="Pass Practical 1" Binding="{Binding PassPractical1}"></DataGridCheckBoxColumn>
                             <DataGridCheckBoxColumn Header="Pass Practical 2" Binding="{Binding PassPractical2}"></DataGridCheckBoxColumn>
+                            <DataGridCheckBoxColumn Header="Pass Practical 3" Binding="{Binding PassPractical3}" Visibility="Hidden"></DataGridCheckBoxColumn>
+                            <DataGridCheckBoxColumn Header="Pass Practical 4" Binding="{Binding PassPractical4}" Visibility="Hidden"></DataGridCheckBoxColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </DockPanel>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>EMRG-1703</TabItem.Header>
+                <DockPanel>
+                    <Grid Margin="5,5,5,5" DockPanel.Dock="Top">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="200"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="45"></RowDefinition>
+                            <RowDefinition Height="40"></RowDefinition>
+                            <RowDefinition Height="40"></RowDefinition>
+                            <RowDefinition Height="40"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="0" Content="{Binding Emrg1703.CourseName}" FontSize="24" FontWeight="Bold"></Label>
+
+
+                        <Label Content="Start Date:" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" VerticalContentAlignment="Center"></Label>
+                        <DatePicker  Margin="2"  Grid.Row="1" Grid.Column="1" SelectedDate="{Binding Emrg1703.CourseStart}" VerticalContentAlignment="Center"></DatePicker>
+
+                        <Label Content="End Date:" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right" VerticalContentAlignment="Center"></Label>
+                        <DatePicker  Margin="2"  Grid.Row="1" Grid.Column="3" SelectedDate="{Binding Emrg1703.CourseEnd}" VerticalContentAlignment="Center"></DatePicker>
+
+                        <Label Content="Lead Instructor:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" VerticalContentAlignment="Center"></Label>
+                        <TextBox  Margin="2" Grid.Row="2"  AcceptsReturn="False" Grid.Column="1" Text="{Binding Emrg1703.LeadInstructor}" VerticalContentAlignment="Center"></TextBox>
+
+                        <Label Content="Location:" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Right" VerticalContentAlignment="Center"></Label>
+                        <TextBox  Margin="2" Grid.Row="2"  AcceptsReturn="False" Grid.Column="3" Text="{Binding Emrg1703.CourseLocation}" VerticalContentAlignment="Center"></TextBox>
+
+                        <Label Content="Assistant Instructor(s):" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" VerticalContentAlignment="Center">
+                        </Label>
+                        <TextBox  Margin="2"  Grid.Row="3" AcceptsReturn="False" Grid.ColumnSpan="3" Grid.Column="1" Text="{Binding Emrg1703.AssistantInstructors}" VerticalContentAlignment="Center"></TextBox>
+                    </Grid>
+
+                    <DataGrid ItemsSource="{Binding Emrg1703.CourseRecords}" CanUserAddRows="False" AutoGenerateColumns="False" VerticalContentAlignment="Center">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding RecordID}" Visibility="Hidden"/>
+                            <DataGridTextColumn Header="ID" Binding="{Binding PersonnelID}" Visibility="Hidden"/>
+                            <DataGridTextColumn Header="ID" Binding="{Binding CourseID}" Visibility="Hidden"/>
+                            <DataGridTextColumn MinWidth="160" Width="*" Header="StudentName" Binding="{Binding StudentName}" IsReadOnly="True"/>
+                            <local1:DataGridNumericColumn  Header="Exam Result" Binding="{Binding ExamResult}"/>
+
+                            <DataGridCheckBoxColumn Header="Pass Practical 1" Binding="{Binding PassPractical1}" Visibility="Hidden"></DataGridCheckBoxColumn>
+                            <DataGridCheckBoxColumn Header="Pass Practical 2" Binding="{Binding PassPractical2}" Visibility="Hidden"></DataGridCheckBoxColumn>
                             <DataGridCheckBoxColumn Header="Pass Practical 3" Binding="{Binding PassPractical3}" Visibility="Hidden"></DataGridCheckBoxColumn>
                             <DataGridCheckBoxColumn Header="Pass Practical 4" Binding="{Binding PassPractical4}" Visibility="Hidden"></DataGridCheckBoxColumn>
                         </DataGrid.Columns>

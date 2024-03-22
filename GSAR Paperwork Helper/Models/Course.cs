@@ -4,38 +4,68 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
 namespace GSAR_Paperwork_Helper.Models
 {
-    public class Course
+    public class Course : INotifyPropertyChanged
     {
-        public Guid CourseID { get; set; } = Guid.Empty;
-        public string? CourseName { get; set; }  
-        public string? CourseCode { get; set; }
-        public string? CourseLocation { get; set; }
-        public string? SARGroupName { get; set; }
-        public string? LeadInstructor {  get; set; }
-        public string? AssistantInstructors { get; set; }
-        public DateTime CourseStart { get; set; }
-        public DateTime CourseEnd { get; set; }
-        
-        public int PracticalCount { get; set; }
+        private string? _CourseName;
+        private string? _CourseCode;
+        private string? _CourseLocation;
+        private string? _SARGroupName;
+        private string? _LeadInstructor;
+        private string? _AssistantInstructors;
+        private DateTime _CourseStart;
+        private DateTime _CourseEnd;
+        private int _PracticalCount;
+        private BindingList<CourseRecord> _Records = new BindingList<CourseRecord>();
 
-        public BindingList<CourseRecord> CourseRecords { get; set; } = new BindingList<CourseRecord>();
+
+        public Guid CourseID { get; set; } = Guid.Empty;
+        public string? CourseName { get => _CourseName; set { _CourseName = value; OnPropertyChanged(nameof(CourseName)); } }
+        public string? CourseCode { get => _CourseCode; set { _CourseCode = value; OnPropertyChanged(nameof(CourseCode)); } }
+        public string? CourseLocation { get => _CourseLocation; set { _CourseLocation = value; OnPropertyChanged(nameof(CourseLocation)); } }
+        public string? SARGroupName { get => _SARGroupName; set { _SARGroupName = value; OnPropertyChanged(nameof(SARGroupName)); } }
+        public string? LeadInstructor { get => _LeadInstructor; set { _LeadInstructor = value; OnPropertyChanged(nameof(LeadInstructor)); } }
+        public string? AssistantInstructors { get => _AssistantInstructors; set { _AssistantInstructors = value; OnPropertyChanged(nameof(AssistantInstructors)); } }
+        public DateTime CourseStart { get => _CourseStart; set { _CourseStart = value; OnPropertyChanged(nameof(CourseStart)); } }
+        public DateTime CourseEnd { get => _CourseEnd; set { _CourseEnd = value; OnPropertyChanged(nameof(CourseEnd)); } }
+
+        public int PracticalCount { get => _PracticalCount; set { _PracticalCount = value; OnPropertyChanged(nameof(PracticalCount)); } }
+        public BindingList<CourseRecord> CourseRecords { get => _Records; set { _Records = value; OnPropertyChanged(nameof(CourseRecords)); } }
 
         public bool ShowPractical1 { get { if (PracticalCount > 0) { return true; } return false; } }
         public bool ShowPractical2 { get { if (PracticalCount > 1) { return true; } return false; } }
         public bool ShowPractical3 { get { if (PracticalCount > 2) { return true; } return false; } }
         public bool ShowPractical4 { get { if (PracticalCount > 3) { return true; } return false; } }
+        
+        
         public Course()
         {
             CourseStart = DateTime.Now;
             CourseEnd = DateTime.Now;
             LeadInstructor = Properties.Settings.Default.DefaultInstructor;
             CourseID = Guid.NewGuid();
+            CourseRecords.ListChanged += CourseRecords_ListChanged;
+        }
+
+        private void CourseRecords_ListChanged(object? sender, ListChangedEventArgs e)
+        {
+            OnPropertyChanged(nameof(CourseRecords));
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            var changed = PropertyChanged;
+            if (changed == null)
+                return;
+
+            changed.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 

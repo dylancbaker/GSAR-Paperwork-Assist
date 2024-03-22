@@ -33,7 +33,15 @@ namespace GSAR_Paperwork_Helper
             InitializeComponent();
             viewModel = new MainWindowViewModel();
             DataContext = viewModel;
+            viewModel.currentProgram.PropertyChanged += CurrentProgram_PropertyChanged;
+        }
 
+        private void CurrentProgram_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(viewModel.currentProgram.FilePath))
+            {
+                SaveFile(false);
+            }
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -82,7 +90,7 @@ namespace GSAR_Paperwork_Helper
                             UseShellExecute = true
                         };
                         process.Start();
-                        process.WaitForExit();
+                        //process.WaitForExit();
                     }
                 }
                 catch (Exception)
@@ -134,6 +142,10 @@ namespace GSAR_Paperwork_Helper
                         ser.Serialize(wr, viewModel.currentProgram);
                     }
 
+                    if (notifyOnSave)
+                    {
+                        MessageBox.Show("Saved! It will automatically save from now on as changes are made.");
+                    }
                     //System.IO.FileStream file = System.IO.File.Create(path);
 
                     //writer.Serialize(file, CurrentTask);
@@ -425,7 +437,28 @@ namespace GSAR_Paperwork_Helper
 
         private void miProgramCompletion_Click(object sender, RoutedEventArgs e)
         {
+            if (viewModel != null && viewModel.currentProgram != null)
+            {
 
+                Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+                dlg.FileName = "4-GSAR Program Completion Roster - " + DateTime.Now.ToString("yyyy-MM-dd"); // Default file name
+                dlg.DefaultExt = ".pdf"; // Default file extension
+                dlg.Filter = "PDF documents (.pdf)|*.pdf"; // Filter files by extension
+
+                // Show save file dialog box
+                Nullable<bool> result = dlg.ShowDialog();
+
+                // Process save file dialog box results
+                if (result == true)
+                {
+                    // Save document
+                    string filename = dlg.FileName;
+
+                    byte[] programPlan = PDFFiller.fillCompletion(viewModel.currentProgram);
+                    if (programPlan != null) { SavePDF(programPlan, filename); }
+
+                }
+            }
         }
 
         private void miNewProgram_Click(object sender, RoutedEventArgs e)
@@ -434,6 +467,12 @@ namespace GSAR_Paperwork_Helper
             program.SetUpNewProgram();
             viewModel.SetNewGSARProgram(program);
 
+        }
+
+        private void miAbout_Click(object sender, RoutedEventArgs e)
+        {
+            Views.AboutWindow aboutWindow = new Views.AboutWindow();
+            aboutWindow.Show();
         }
     }
 }
