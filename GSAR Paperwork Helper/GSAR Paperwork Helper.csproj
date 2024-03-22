@@ -8,13 +8,26 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
     <StartupObject>GSAR_Paperwork_Helper.App</StartupObject>
+    <ApplicationIcon>GSAR-Paperwork-Assist-01.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Views\GSAR Paperwork Assist-01.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="GSAR-Paperwork-Assist-01.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="BouncyCastle.NetCore" Version="2.2.1" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
     <PackageReference Include="itext7" Version="8.0.3" />
     <PackageReference Include="itext7.bouncy-castle-adapter" Version="8.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Views\GSAR Paperwork Assist-01.png" />
   </ItemGroup>
 
   <ItemGroup>
