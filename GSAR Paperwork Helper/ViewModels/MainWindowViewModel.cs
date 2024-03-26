@@ -37,6 +37,27 @@ namespace GSAR_Paperwork_Helper.ViewModels
             OnPropertyChanged(nameof(Emrg1200)); OnPropertyChanged(nameof(Emrg1200.CourseRecords));
             OnPropertyChanged(nameof(studentList));
 
+            foreach(Course c in currentProgram.courses)
+            {
+                c.PropertyChanged += C_PropertyChanged;
+            }
+            currentProgram.PropertyChanged += CurrentProgram_PropertyChanged;
+        }
+
+        private void C_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != null && e.PropertyName.Equals("CourseLocation"))
+            {
+                foreach(Course c in currentProgram.courses)
+                {
+                    if (string.IsNullOrEmpty(c.CourseLocation))
+                    {
+                        c.CourseLocation = ((Course)sender).CourseLocation;
+                    }
+                }
+            }
+
+            OnPropertyChanged(nameof(currentProgram));
         }
 
         private BindingList<Personnel> _studentList = null;
@@ -56,21 +77,30 @@ namespace GSAR_Paperwork_Helper.ViewModels
             studentList = new BindingList<Personnel>(currentProgram.students);
             studentList.ListChanged += StudentList_ListChanged;
             currentProgram.PropertyChanged += CurrentProgram_PropertyChanged;
+            
 
         }
 
         private void CurrentProgram_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof
-                (currentProgram.LeadInstructor))
+            if (e.PropertyName == nameof(currentProgram.LeadInstructor))
             {
                 if (Properties.Settings.Default.DefaultInstructor != null) { Properties.Settings.Default.DefaultInstructor = currentProgram.LeadInstructor; Properties.Settings.Default.Save(); }
+                foreach(Course c in currentProgram.courses)
+                {
+                    if (string.IsNullOrEmpty(c.LeadInstructor)) { c.LeadInstructor = currentProgram.LeadInstructor; }
+                }
             }
             else if (e.PropertyName == nameof(currentProgram.SARGroupID))
             {
                 Properties.Settings.Default.DefaultGroup = currentProgram.SARGroupID; Properties.Settings.Default.Save();
+                Organization org = OrganizationTools.GetOrganization(currentProgram.SARGroupID);
+                if (org != null) { currentProgram.SARGroupName = org.OrganizationName; }
             }
+           
         }
+
+
 
         private void StudentList_ListChanged(object? sender, ListChangedEventArgs e)
         {

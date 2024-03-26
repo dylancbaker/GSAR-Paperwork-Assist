@@ -34,6 +34,9 @@ namespace GSAR_Paperwork_Helper
             viewModel = new MainWindowViewModel();
             DataContext = viewModel;
             viewModel.currentProgram.PropertyChanged += CurrentProgram_PropertyChanged;
+            GSARProgram newprog = new GSARProgram();
+            newprog.SetUpNewProgram();
+            viewModel.SetNewGSARProgram(newprog);
         }
 
         private void CurrentProgram_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
