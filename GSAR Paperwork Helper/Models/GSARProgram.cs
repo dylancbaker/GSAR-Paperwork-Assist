@@ -31,8 +31,8 @@ namespace GSAR_Paperwork_Helper.Models
         public string? MailingAddress { get => _MailingAddress; set { _MailingAddress = value; OnPropertyChanged(nameof(MailingAddress)); } }
         public string? Phone { get => _Phone; set { _Phone = value; OnPropertyChanged(nameof(Phone)); } }
         public DateTime ProgramPlanDate { get => _ProgramPlanDate; set { _ProgramPlanDate = value; OnPropertyChanged(nameof(ProgramPlanDate)); } }
-        public BindingList<Personnel> students { get => _Students; set { _Students = value; OnPropertyChanged(nameof(students)); } }
-        public BindingList<Course> courses { get => _Courses; set { _Courses = value; OnPropertyChanged(nameof(courses)); } }
+        public BindingList<Personnel> Students { get => _Students; set { _Students = value; OnPropertyChanged(nameof(Students)); } }
+        public BindingList<Course> Courses { get => _Courses; set { _Courses = value; OnPropertyChanged(nameof(Courses)); } }
         public string? FilePath { get; set; }
 
         public GSARProgram()
@@ -46,23 +46,23 @@ namespace GSAR_Paperwork_Helper.Models
             }
             ProgramPlanDate = DateTime.Now;
             LeadInstructor = Properties.Settings.Default.DefaultInstructor;
-            students.ListChanged += Students_ListChanged;
-            courses.ListChanged += Courses_ListChanged;
+            Students.ListChanged += Students_ListChanged;
+            Courses.ListChanged += Courses_ListChanged;
         }
 
         private void Courses_ListChanged(object? sender, ListChangedEventArgs e)
         {
-            OnPropertyChanged(nameof(courses));
+            OnPropertyChanged(nameof(Courses));
         }
 
         private void Students_ListChanged(object? sender, ListChangedEventArgs e)
         {
-            OnPropertyChanged(nameof(students));
+            OnPropertyChanged(nameof(Students));
         }
 
         public void SetUpNewProgram()
         {
-            courses = new BindingList<Course>(CourseTools.GetBlankCourses());
+            Courses = new BindingList<Course>(CourseTools.GetBlankCourses());
 
         }
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -74,15 +74,17 @@ namespace GSAR_Paperwork_Helper.Models
 
             changed.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+      
     }
 
     public static class GSARProgramTools
     {
         public static bool StudentPassedCourse(this GSARProgram program, Guid CourseID, Guid PersonID)
         {
-            if (program.courses.Any(o => o.CourseID == CourseID) && program.courses.First(o => o.CourseID == CourseID).CourseRecords.Any(o => o.PersonnelID == PersonID))
+            if (program.Courses.Any(o => o.CourseID == CourseID) && program.Courses.First(o => o.CourseID == CourseID).CourseRecords.Any(o => o.PersonnelID == PersonID))
             {
-                return program.courses.First(o => o.CourseID == CourseID).CourseRecords.First(o => o.PersonnelID == PersonID).FinalPass;
+                return program.Courses.First(o => o.CourseID == CourseID).CourseRecords.First(o => o.PersonnelID == PersonID).FinalPass;
             }
             return false;
         }

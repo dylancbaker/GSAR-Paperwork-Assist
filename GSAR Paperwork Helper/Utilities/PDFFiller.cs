@@ -55,7 +55,7 @@ namespace GSAR_Paperwork_Helper.Utilities
 
                     for (int x = 0; x < course.CourseRecords.Count && x < 26; x++)
                     {
-                        Personnel p = program.students[x];
+                        Personnel p = program.Students[x];
                         fields.TryGetValue("LAST NAME" + (x + 1), out toSet);
                         if (toSet != null) { toSet.SetValue(p.LastName); }
 
@@ -131,55 +131,55 @@ namespace GSAR_Paperwork_Helper.Utilities
 
 
                     _ = fields.TryGetValue("EMRG1200 Incident Command System Level 100 if reviewing as group", out toSet);
-                    if (toSet != null && program.courses.Any(o => o.CourseID == StaticValues.EMRG1200))
+                    if (toSet != null && program.Courses.Any(o => o.CourseID == StaticValues.EMRG1200))
                     {
-                        toSet.SetValue(program.courses.First(o => o.CourseID == StaticValues.EMRG1200).CourseStart.ToString("yyyy-MMM-dd") 
-                            + " to " + program.courses.First(o => o.CourseID == StaticValues.EMRG1200).CourseEnd.ToString("yyyy-MMM-dd"));
+                        toSet.SetValue(program.Courses.First(o => o.CourseID == StaticValues.EMRG1200).CourseStart.ToString("yyyy-MMM-dd") 
+                            + " to " + program.Courses.First(o => o.CourseID == StaticValues.EMRG1200).CourseEnd.ToString("yyyy-MMM-dd"));
                     }
                     _ = fields.TryGetValue("EMRG1701 GSAR Volunteer Orientation and Safety Guidelines", out toSet);
-                    if (toSet != null && program.courses.Any(o => o.CourseID == StaticValues.EMRG1701))
+                    if (toSet != null && program.Courses.Any(o => o.CourseID == StaticValues.EMRG1701))
                     {
-                        toSet.SetValue(program.courses.First(o => o.CourseID == StaticValues.EMRG1701).CourseStart.ToString("yyyy-MMM-dd")
-                            + " to " + program.courses.First(o => o.CourseID == StaticValues.EMRG1701).CourseEnd.ToString("yyyy-MMM-dd"));
+                        toSet.SetValue(program.Courses.First(o => o.CourseID == StaticValues.EMRG1701).CourseStart.ToString("yyyy-MMM-dd")
+                            + " to " + program.Courses.First(o => o.CourseID == StaticValues.EMRG1701).CourseEnd.ToString("yyyy-MMM-dd"));
                     }
                     _ = fields.TryGetValue("EMRG1703 SAR in BC", out toSet);
-                    if (toSet != null && program.courses.Any(o => o.CourseID == StaticValues.EMRG1703))
+                    if (toSet != null && program.Courses.Any(o => o.CourseID == StaticValues.EMRG1703))
                     {
-                        toSet.SetValue(program.courses.First(o => o.CourseID == StaticValues.EMRG1703).CourseStart.ToString("yyyy-MMM-dd")
-                            + " to " + program.courses.First(o => o.CourseID == StaticValues.EMRG1703).CourseEnd.ToString("yyyy-MMM-dd"));
+                        toSet.SetValue(program.Courses.First(o => o.CourseID == StaticValues.EMRG1703).CourseStart.ToString("yyyy-MMM-dd")
+                            + " to " + program.Courses.First(o => o.CourseID == StaticValues.EMRG1703).CourseEnd.ToString("yyyy-MMM-dd"));
                     }
                     _ = fields.TryGetValue("EMRG1702 Introduction to Search Management", out toSet);
-                    if (toSet != null && program.courses.Any(o => o.CourseID == StaticValues.EMRG1702))
+                    if (toSet != null && program.Courses.Any(o => o.CourseID == StaticValues.EMRG1702))
                     {
-                        toSet.SetValue(program.courses.First(o => o.CourseID == StaticValues.EMRG1702).CourseStart.ToString("yyyy-MMM-dd")
-                            + " to " + program.courses.First(o => o.CourseID == StaticValues.EMRG1702).CourseEnd.ToString("yyyy-MMM-dd"));
+                        toSet.SetValue(program.Courses.First(o => o.CourseID == StaticValues.EMRG1702).CourseStart.ToString("yyyy-MMM-dd")
+                            + " to " + program.Courses.First(o => o.CourseID == StaticValues.EMRG1702).CourseEnd.ToString("yyyy-MMM-dd"));
                     }
                     _ = fields.TryGetValue("EMRG1705 Navigation Skills", out toSet);
-                    if (toSet != null && program.courses.Any(o => o.CourseID == StaticValues.EMRG1705))
+                    if (toSet != null && program.Courses.Any(o => o.CourseID == StaticValues.EMRG1705))
                     {
-                        toSet.SetValue(program.courses.First(o => o.CourseID == StaticValues.EMRG1705).CourseStart.ToString("yyyy-MMM-dd")
-                            + " to " + program.courses.First(o => o.CourseID == StaticValues.EMRG1705).CourseEnd.ToString("yyyy-MMM-dd"));
+                        toSet.SetValue(program.Courses.First(o => o.CourseID == StaticValues.EMRG1705).CourseStart.ToString("yyyy-MMM-dd")
+                            + " to " + program.Courses.First(o => o.CourseID == StaticValues.EMRG1705).CourseEnd.ToString("yyyy-MMM-dd"));
                     }
                     _ = fields.TryGetValue("EMRG1706 Wilderness Survival for GSAR", out toSet);
-                    if (toSet != null && program.courses.Any(o => o.CourseID == StaticValues.EMRG1706))
+                    if (toSet != null && program.Courses.Any(o => o.CourseID == StaticValues.EMRG1706))
                     {
-                        toSet.SetValue(program.courses.First(o => o.CourseID == StaticValues.EMRG1706).CourseStart.ToString("yyyy-MMM-dd")
-                            + " to " + program.courses.First(o => o.CourseID == StaticValues.EMRG1706).CourseEnd.ToString("yyyy-MMM-dd"));
+                        toSet.SetValue(program.Courses.First(o => o.CourseID == StaticValues.EMRG1706).CourseStart.ToString("yyyy-MMM-dd")
+                            + " to " + program.Courses.First(o => o.CourseID == StaticValues.EMRG1706).CourseEnd.ToString("yyyy-MMM-dd"));
                     }
                     _ = fields.TryGetValue("EMRG1704 Ground Search and Rescue Skills", out toSet);
-                    if (toSet != null && program.courses.Any(o => o.CourseID == StaticValues.EMRG1704))
+                    if (toSet != null && program.Courses.Any(o => o.CourseID == StaticValues.EMRG1704))
                     {
-                        toSet.SetValue(program.courses.First(o => o.CourseID == StaticValues.EMRG1704).CourseStart.ToString("yyyy-MMM-dd")
-                            + " to " + program.courses.First(o => o.CourseID == StaticValues.EMRG1704).CourseEnd.ToString("yyyy-MMM-dd"));
+                        toSet.SetValue(program.Courses.First(o => o.CourseID == StaticValues.EMRG1704).CourseStart.ToString("yyyy-MMM-dd")
+                            + " to " + program.Courses.First(o => o.CourseID == StaticValues.EMRG1704).CourseEnd.ToString("yyyy-MMM-dd"));
                     }
 
 
 
 
 
-                    for (int x = 0; x < program.students.Count && x < 28; x++)
+                    for (int x = 0; x < program.Students.Count && x < 28; x++)
                     {
-                        Personnel p = program.students[x];
+                        Personnel p = program.Students[x];
                         fields.TryGetValue("LAST NAME" + (x + 1), out toSet);
                         if (toSet != null) { toSet.SetValue(p.LastName); }
                         fields.TryGetValue("FIRST NAME" + (x + 1), out toSet);
@@ -225,9 +225,9 @@ namespace GSAR_Paperwork_Helper.Utilities
                     _ = fields.TryGetValue("PHONE", out toSet);
                     if (toSet != null) { toSet.SetValue(program.Phone); }
 
-                    for (int x = 0; x < program.students.Count && x < 28; x++)
+                    for (int x = 0; x < program.Students.Count && x < 28; x++)
                     {
-                        Personnel p = program.students[x];
+                        Personnel p = program.Students[x];
                         fields.TryGetValue("LAST NAME" + (x + 1), out toSet);
                         if (toSet != null) { toSet.SetValue(p.LastName); }
                         fields.TryGetValue("FIRST NAME" + (x + 1), out toSet);

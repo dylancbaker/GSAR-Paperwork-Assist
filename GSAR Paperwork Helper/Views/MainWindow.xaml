@@ -33,6 +33,8 @@
                 <MenuItem Header="All Course Rosters" x:Name="miAllRosters" Click="miAllRosters_Click"></MenuItem>
                 <Separator></Separator>
                 <MenuItem Header="Program Completion Roster" x:Name="miProgramCompletion" Click="miProgramCompletion_Click"></MenuItem>
+                <Separator></Separator>
+                <MenuItem Header="Student list to CSV" x:Name="miStudentListCSV" Click="miStudentListCSV_Click"></MenuItem>
             </MenuItem>
             <MenuItem Header="Help">
                 <MenuItem Header="About and License" x:Name="miAbout" Click="miAbout_Click"></MenuItem>
@@ -89,7 +91,13 @@ SelectedValuePath="OrganizationID" VerticalContentAlignment="Center" ></ComboBox
 
                 <DockPanel>
                     <Label DockPanel.Dock="Top" FontStyle="Italic" Background="LightBlue">Click below to add a student.  Type [ENTER] to create the next new student, etc.</Label>
-                    <DataGrid Margin="5" AutoGenerateColumns="False" ItemsSource="{Binding studentList}">
+                    <DataGrid Margin="5" Name="StudentsDataGrid" AutoGenerateColumns="False" ItemsSource="{Binding studentList}">
+                        <DataGrid.ContextMenu>
+                            <ContextMenu>
+                                
+                                <MenuItem Header="Delete Student(s)" Click="Delete_Selected_Students_Click"></MenuItem>
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="ID" Binding="{Binding ID}" Visibility="Hidden"/>
                             <DataGridTextColumn MinWidth="160"  Header="Last Name" Binding="{Binding LastName}"/>

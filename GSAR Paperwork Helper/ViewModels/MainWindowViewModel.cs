@@ -15,16 +15,16 @@ namespace GSAR_Paperwork_Helper.ViewModels
     {
         private readonly Guid BCSARA = new Guid("CC3A9DC9-01A3-4D39-B806-2128B51120BC");
         public List<Organization> BCSARGroups { get { return OrganizationTools.GetOrganizations(BCSARA); } }
-     
+
 
 
         private static GSARProgram? _currentProgram = new GSARProgram();
-        public GSARProgram currentProgram { get { return _currentProgram; } private set { _currentProgram = value;  } }
+        public GSARProgram currentProgram { get { return _currentProgram; } private set { _currentProgram = value; } }
 
         public void SetNewGSARProgram(GSARProgram newGSARProgram)
         {
             currentProgram = newGSARProgram;
-            studentList = new BindingList<Personnel>(currentProgram.students);
+            studentList = new BindingList<Personnel>(currentProgram.Students);
             studentList.ListChanged += StudentList_ListChanged;
 
             OnPropertyChanged(nameof(currentProgram));
@@ -37,7 +37,7 @@ namespace GSAR_Paperwork_Helper.ViewModels
             OnPropertyChanged(nameof(Emrg1200)); OnPropertyChanged(nameof(Emrg1200.CourseRecords));
             OnPropertyChanged(nameof(studentList));
 
-            foreach(Course c in currentProgram.courses)
+            foreach (Course c in currentProgram.Courses)
             {
                 c.PropertyChanged += C_PropertyChanged;
             }
@@ -48,7 +48,7 @@ namespace GSAR_Paperwork_Helper.ViewModels
         {
             if (e.PropertyName != null && e.PropertyName.Equals("CourseLocation"))
             {
-                foreach(Course c in currentProgram.courses)
+                foreach (Course c in currentProgram.Courses)
                 {
                     if (string.IsNullOrEmpty(c.CourseLocation))
                     {
@@ -62,22 +62,22 @@ namespace GSAR_Paperwork_Helper.ViewModels
 
         private BindingList<Personnel> _studentList = null;
         public BindingList<Personnel> studentList { get => _studentList; set => _studentList = value; }
-       
-        public Course Emrg1701 { get { if (currentProgram.courses.Any(o => o.CourseID == StaticValues.EMRG1701)) { return currentProgram.courses.First(o => o.CourseID == StaticValues.EMRG1701); } return null; } }
-        public Course Emrg1702 { get { if (currentProgram.courses.Any(o => o.CourseID == StaticValues.EMRG1702)) { return currentProgram.courses.First(o => o.CourseID == StaticValues.EMRG1702); } return null; } }
-        public Course Emrg1703 { get { if (currentProgram.courses.Any(o => o.CourseID == StaticValues.EMRG1703)) { return currentProgram.courses.First(o => o.CourseID == StaticValues.EMRG1703); } return null; } }
-        public Course Emrg1704 { get { if (currentProgram.courses.Any(o => o.CourseID == StaticValues.EMRG1704)) { return currentProgram.courses.First(o => o.CourseID == StaticValues.EMRG1704); } return null; } }
-        public Course Emrg1705 { get { if (currentProgram.courses.Any(o => o.CourseID == StaticValues.EMRG1705)) { return currentProgram.courses.First(o => o.CourseID == StaticValues.EMRG1705); } return null; } }
-        public Course Emrg1706 { get { if (currentProgram.courses.Any(o => o.CourseID == StaticValues.EMRG1706)) { return currentProgram.courses.First(o => o.CourseID == StaticValues.EMRG1706); } return null; } }
-        public Course Emrg1200 { get { if (currentProgram.courses.Any(o => o.CourseID == StaticValues.EMRG1200)) { return currentProgram.courses.First(o => o.CourseID == StaticValues.EMRG1200); } return null; } }
+
+        public Course Emrg1701 { get { if (currentProgram.Courses.Any(o => o.CourseID == StaticValues.EMRG1701)) { return currentProgram.Courses.First(o => o.CourseID == StaticValues.EMRG1701); } return null; } }
+        public Course Emrg1702 { get { if (currentProgram.Courses.Any(o => o.CourseID == StaticValues.EMRG1702)) { return currentProgram.Courses.First(o => o.CourseID == StaticValues.EMRG1702); } return null; } }
+        public Course Emrg1703 { get { if (currentProgram.Courses.Any(o => o.CourseID == StaticValues.EMRG1703)) { return currentProgram.Courses.First(o => o.CourseID == StaticValues.EMRG1703); } return null; } }
+        public Course Emrg1704 { get { if (currentProgram.Courses.Any(o => o.CourseID == StaticValues.EMRG1704)) { return currentProgram.Courses.First(o => o.CourseID == StaticValues.EMRG1704); } return null; } }
+        public Course Emrg1705 { get { if (currentProgram.Courses.Any(o => o.CourseID == StaticValues.EMRG1705)) { return currentProgram.Courses.First(o => o.CourseID == StaticValues.EMRG1705); } return null; } }
+        public Course Emrg1706 { get { if (currentProgram.Courses.Any(o => o.CourseID == StaticValues.EMRG1706)) { return currentProgram.Courses.First(o => o.CourseID == StaticValues.EMRG1706); } return null; } }
+        public Course Emrg1200 { get { if (currentProgram.Courses.Any(o => o.CourseID == StaticValues.EMRG1200)) { return currentProgram.Courses.First(o => o.CourseID == StaticValues.EMRG1200); } return null; } }
 
         public MainWindowViewModel()
         {
             currentProgram.SetUpNewProgram();
-            studentList = new BindingList<Personnel>(currentProgram.students);
+            studentList = new BindingList<Personnel>(currentProgram.Students);
             studentList.ListChanged += StudentList_ListChanged;
             currentProgram.PropertyChanged += CurrentProgram_PropertyChanged;
-            
+
 
         }
 
@@ -86,7 +86,7 @@ namespace GSAR_Paperwork_Helper.ViewModels
             if (e.PropertyName == nameof(currentProgram.LeadInstructor))
             {
                 if (Properties.Settings.Default.DefaultInstructor != null) { Properties.Settings.Default.DefaultInstructor = currentProgram.LeadInstructor; Properties.Settings.Default.Save(); }
-                foreach(Course c in currentProgram.courses)
+                foreach (Course c in currentProgram.Courses)
                 {
                     if (string.IsNullOrEmpty(c.LeadInstructor)) { c.LeadInstructor = currentProgram.LeadInstructor; }
                 }
@@ -97,31 +97,47 @@ namespace GSAR_Paperwork_Helper.ViewModels
                 Organization org = OrganizationTools.GetOrganization(currentProgram.SARGroupID);
                 if (org != null) { currentProgram.SARGroupName = org.OrganizationName; }
             }
-           
+
         }
 
+        public void RemoveStudent(Personnel studentToRemove)
+        {
+            studentList.Remove(studentToRemove);
 
+            currentProgram.Students.Remove(studentToRemove);
+            foreach (Course c in currentProgram.Courses)
+            {
+                if (c.CourseRecords.Any(o => o.PersonnelID == studentToRemove.ID))
+                {
+                    c.CourseRecords.Remove(c.CourseRecords.First(o => o.PersonnelID == studentToRemove.ID));
+                }
+            }
+            OnPropertyChanged(nameof(studentList));
+        }
 
         private void StudentList_ListChanged(object? sender, ListChangedEventArgs e)
         {
-            Personnel p = studentList[e.NewIndex];
-            foreach (Course c in currentProgram.courses)
+            if (e.NewIndex < studentList.Count)
             {
-                if (c.CourseRecords.Any(o => o.PersonnelID == p.ID))
+                Personnel p = studentList[e.NewIndex];
+                foreach (Course c in currentProgram.Courses)
                 {
-                    c.CourseRecords.First(o => o.PersonnelID == p.ID).StudentName = p.LastName + ", " + p.FirstName;
-                }
-                else
-                {
-                    CourseRecord record = new CourseRecord();
-                    record.CourseID = c.CourseID;
-                    record.PersonnelID = p.ID;
-                    record.StudentName = p.LastName + ", " + p.FirstName;
-                    c.CourseRecords.Add(record);
+                    if (c.CourseRecords.Any(o => o.PersonnelID == p.ID))
+                    {
+                        c.CourseRecords.First(o => o.PersonnelID == p.ID).StudentName = p.LastName + ", " + p.FirstName;
+                    }
+                    else
+                    {
+                        CourseRecord record = new CourseRecord();
+                        record.CourseID = c.CourseID;
+                        record.PersonnelID = p.ID;
+                        record.StudentName = p.LastName + ", " + p.FirstName;
+                        c.CourseRecords.Add(record);
+                    }
                 }
             }
         }
 
-      
+
     }
 }

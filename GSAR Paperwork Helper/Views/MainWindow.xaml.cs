@@ -6,6 +6,7 @@ using Microsoft.Win32;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -407,11 +408,11 @@ namespace GSAR_Paperwork_Helper
                 {
                     // Save document
                     string filename = dlg.FileName;
-                    string[] fileNames = new string[viewModel.currentProgram.courses.Count];
+                    string[] fileNames = new string[viewModel.currentProgram.Courses.Count];
 
                     string tempPath = System.IO.Path.GetTempPath();
                     int fileIndex = 0;
-                    foreach(Course c in viewModel.currentProgram.courses)
+                    foreach(Course c in viewModel.currentProgram.Courses)
                     {
                         string tempFileName = System.IO.Path.GetTempFileName();
                         string path = System.IO.Path.Combine(tempPath, tempFileName);
@@ -476,6 +477,80 @@ namespace GSAR_Paperwork_Helper
         {
             Views.AboutWindow aboutWindow = new Views.AboutWindow();
             aboutWindow.Show();
+        }
+
+        private void miStudentListCSV_Click(object sender, RoutedEventArgs e)
+        {
+            ExportToCSV();
+        }
+
+        private void ExportToCSV()
+        {
+
+            string downloadsPath = KnownFolders.GetPath(KnownFolder.Downloads);
+            downloadsPath = System.IO.Path.Combine(downloadsPath, "Student List " + viewModel.currentProgram.ProgramPlanDate.Year + "-" + viewModel.currentProgram.ProgramPlanDate.Month + "-" + viewModel.currentProgram.ProgramPlanDate.Day + ".csv");
+            string delimiter = ",";
+            StringBuilder csv = new StringBuilder();
+            //header row
+            csv.Append("Name"); csv.Append(delimiter);
+            csv.Append("Email"); csv.Append(delimiter);
+            csv.Append("DOB"); csv.Append(delimiter);
+            csv.Append(Environment.NewLine);
+            foreach (Personnel p in viewModel.currentProgram.Students.Where(o=>!string.IsNullOrEmpty(o.FirstName)))
+            {
+                
+                csv.Append("\""); csv.Append(p.FirstName.EscapeQuotes()); csv.Append(" "); csv.Append(p.LastName.EscapeQuotes()); csv.Append("\""); csv.Append(delimiter);
+                csv.Append("\""); csv.Append(p.EmailAddress.EscapeQuotes()); csv.Append("\""); csv.Append(delimiter);
+                csv.Append("\""); csv.Append(p.DateOfBirth.ToShortDateString()); csv.Append("\""); csv.Append(delimiter);
+                csv.Append(Environment.NewLine);
+            }
+            
+
+
+            try
+                {
+                    System.IO.File.WriteAllText(downloadsPath, csv.ToString());
+                OpenWithDefaultProgram(downloadsPath);
+                   
+                        //System.Diagnostics.Process.Start(downloadsPath);
+                    
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Sorry, there was a problem writing to the file.  Please report this error: " + ex.ToString());
+                }
+            
+        }
+
+        public static void OpenWithDefaultProgram(string path)
+        {
+            using Process fileopener = new Process();
+
+            fileopener.StartInfo.FileName = "explorer";
+            fileopener.StartInfo.Arguments = "\"" + path + "\"";
+            fileopener.Start();
+        }
+
+        private void Delete_Selected_Students_Click(object sender, RoutedEventArgs e)
+        {
+            List<Personnel> SelectedStudents = new List<Personnel>();
+            if(StudentsDataGrid.SelectedItems != null)
+            {
+                foreach (Personnel p in StudentsDataGrid.SelectedItems)
+                {
+                    SelectedStudents.Add(p);
+                }
+
+                MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Are you sure you want to delete " + SelectedStudents.Count + " students?", "Delete Confirmation", System.Windows.MessageBoxButton.YesNo);
+                if (messageBoxResult == MessageBoxResult.Yes)
+
+                {
+                    foreach (Personnel p in SelectedStudents)
+                    {
+                        viewModel.RemoveStudent(p);
+                    }
+                }
+            }
         }
     }
 }
